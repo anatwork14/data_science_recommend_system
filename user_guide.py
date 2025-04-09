@@ -80,11 +80,11 @@ if language == "English":
     ## 🔗 GitHub Repository
 
     Access the full code, models, and documentation here:  
-    👉 [GitHub Repository](https://github.com/your-repo)
+    👉 [GitHub Repository](https://github.com/anatwork14/data_science_recommend_system.git)
 
     ---
 
-    Enjoy exploring and recommending with Shopee AI! 🚀
+    Enjoy exploring and recommending with Shopee Recommendation System! 🚀
     """)
 
 elif language == "Tiếng Việt":
@@ -154,9 +154,9 @@ elif language == "Tiếng Việt":
     ## 🔗 Kho Mã Nguồn GitHub
 
     Truy cập mã nguồn, mô hình và tài liệu tại:  
-    👉 [GitHub Repository](https://github.com/your-repo)
+    👉 [GitHub Repository](https://github.com/anatwork14/data_science_recommend_system.git)
 
     ---
 
-    Chúc bạn trải nghiệm vui vẻ cùng Shopee AI! 🚀
+    Chúc bạn trải nghiệm vui vẻ cùng Shopee Recommendation System! 🚀
     """)
