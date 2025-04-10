@@ -7,6 +7,7 @@ if "language" not in st.session_state:
 
 st.session_state.language = st.sidebar.radio("🌐 Select Language / Chọn ngôn ngữ", ("English", "Tiếng Việt"))
 
+st.sidebar.write("""---""")
 
 # Define your pages (as you did)
 introduction = st.Page("introduction.py", title="Introduction", icon="🎈")

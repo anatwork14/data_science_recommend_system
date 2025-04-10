@@ -29,12 +29,12 @@ if language == "English":
     Recommends similar items based on product content (e.g., name, description, category).
 
     - `cosine.pkl`: Uses cosine similarity between product vectors.
-    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim.
+    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim (Updating).
 
     ### 🔹 Collaborative Filtering
     Recommends items based on user behavior and preferences.
 
-    - `als.pkl`: Matrix factorization using the ALS algorithm.
+    - `als.pkl`: Matrix factorization using the ALS algorithm (Updating).
     - `surprise.pkl`: Collaborative filtering model using the Surprise library.
 
     ---
