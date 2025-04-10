@@ -8,3 +8,16 @@ scikit-surprise==1.1.4
 scipy==1.15.2
 surprise==0.1
 wordcloud==1.9.4
+st-annotated-text==4.0.2
+st-theme==1.2.3
+streamlit==1.44.1
+streamlit-avatar==0.1.3
+streamlit-camera-input-live==0.2.0
+streamlit-card==1.0.2
+streamlit-embedcode==0.1.2
+streamlit-extras==0.6.0
+streamlit-faker==0.0.3
+streamlit-image-coordinates==0.1.9
+streamlit-keyup==0.3.0
+streamlit-toggle-switch==1.0.2
+streamlit-vertical-slider==2.5.5
