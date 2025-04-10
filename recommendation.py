@@ -171,6 +171,8 @@ if filtering_method == "🧠 Content-Based Filtering" or filtering_method == "�
         )
     if (selected_category != "All"):
         products_df2 = products_df[products_df["sub_category"] == selected_category]
+    else:
+        products_df2 = products_df
     if "Name" in selection_mode or "Tên" in selection_mode:
         top_products = (
             products_df2['product_name']
