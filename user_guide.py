@@ -29,12 +29,12 @@ if language == "English":
     Recommends similar items based on product content (e.g., name, description, category).
 
     - `cosine.pkl`: Uses cosine similarity between product vectors.
-    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim.
+    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim (Updating).
 
     ### 🔹 Collaborative Filtering
     Recommends items based on user behavior and preferences.
 
-    - `als.pkl`: Matrix factorization using the ALS algorithm.
+    - `als.pkl`: Matrix factorization using the ALS algorithm (Updating).
     - `surprise.pkl`: Collaborative filtering model using the Surprise library.
 
     ---
@@ -80,11 +80,11 @@ if language == "English":
     ## 🔗 GitHub Repository
 
     Access the full code, models, and documentation here:  
-    👉 [GitHub Repository](https://github.com/your-repo)
+    👉 [GitHub Repository](https://github.com/anatwork14/data_science_recommend_system.git)
 
     ---
 
-    Enjoy exploring and recommending with Shopee AI! 🚀
+    Enjoy exploring and recommending with Shopee Recommendation System! 🚀
     """)
 
 elif language == "Tiếng Việt":
@@ -154,9 +154,9 @@ elif language == "Tiếng Việt":
     ## 🔗 Kho Mã Nguồn GitHub
 
     Truy cập mã nguồn, mô hình và tài liệu tại:  
-    👉 [GitHub Repository](https://github.com/your-repo)
+    👉 [GitHub Repository](https://github.com/anatwork14/data_science_recommend_system.git)
 
     ---
 
-    Chúc bạn trải nghiệm vui vẻ cùng Shopee AI! 🚀
+    Chúc bạn trải nghiệm vui vẻ cùng Shopee Recommendation System! 🚀
     """)
