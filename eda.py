@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import altair as alt
+import plotly.express as px
 
 # Set language from session
 language = st.session_state.get("language", "English")
@@ -29,6 +30,7 @@ selected_dataset = st.sidebar.selectbox(
     ("Products Ratings", "User Ratings", "Overall for both")
 )
 
+st.session_state.selected_dataset = selected_dataset
 dataset = []
 
 if (selected_dataset == "Products Ratings"):
@@ -61,6 +63,9 @@ if (selected_dataset != "Overall for both"):
             value = value = st.slider("Select the number of category to display" if language == "English" else "Chọn số lượng thể loại để hiển thị", min_value=0, max_value=dataset["sub_category"].nunique(), value=5)
             top_categories = dataset['sub_category'].value_counts().head(value)
             st.bar_chart(top_categories)
+        
+        st.markdown("---")
+
         # === ☁️ WordCloud for Product Names ===
         if language == "English":
             st.write("#### ☁️ Word Cloud of Product Names")
@@ -74,6 +79,7 @@ if (selected_dataset != "Overall for both"):
         ax.axis("off")
         st.pyplot(fig)
         
+        st.markdown("---")
         if 'price' in dataset.columns:
             if language == "English":
                 st.write(f"#### 💹💹💹 Price Distribution {selected_dataset}")
@@ -82,36 +88,62 @@ if (selected_dataset != "Overall for both"):
 
             col1, col2, col3 = st.columns(3)
 
-            col1.metric("⭐ Max" if language == "English" else "⭐ Cao nhất", f"{dataset['price'].max():.2f}")
-            col2.metric("🔻 Min" if language == "English" else "🔻 Thấp nhất", f"{dataset['price'].min():.2f}")
-            col3.metric("📊 Mean" if language == "English" else "📊 Trung bình", f"{dataset['price'].mean():.2f}")
+            col1.metric(
+                "⭐ Max" if language == "English" else "⭐ Cao nhất", 
+                f"{int(dataset['price'].max()):,}".replace(",", ".") + " đ"
+            )
 
-            fig2, ax2 = plt.subplots()
-            sns.boxplot(data=dataset, x='price', ax=ax2, color='lightgreen')
-            ax2.set_title("Price Boxplot" if language == "English" else "Biểu đồ hộp giá")
-            st.pyplot(fig2)
-            
-            import plotly.express as px
+            col2.metric(
+                "🔻 Min" if language == "English" else "🔻 Thấp nhất", 
+                f"{int(dataset['price'].min()):,}".replace(",", ".") + " đ"
+            )
 
+            col3.metric(
+                "📊 Mean" if language == "English" else "📊 Trung bình", 
+                f"{int(dataset['price'].mean()):,}".replace(",", ".") + " đ"
+            )
+
+        
         fig2 = px.box(
             dataset,
             x='price',
             points='outliers',  # Only show outliers
             hover_data=["product_name", "rating", "price"],
-            title="📦 Price Distribution with Outliers" if language == "English" else "📦 Phân phối giá (bao gồm ngoại lệ)",
+            title=" ",
+        )
+        fig2.update_traces(
+            marker=dict(
+                color="#1f77b4",  # deep blue
+                size=8,
+                line=dict(width=1.5, color='#ffffff')  # white border
+            )
         )
 
-        fig2.update_traces(marker=dict(color="crimson", size=6, line=dict(width=1, color='white')))
         fig2.update_layout(
-            xaxis_title="Price" if language == "English" else "Giá",
-            yaxis_title=None,
-            title_font=dict(size=22, family="Roboto"),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(size=20),
-            margin=dict(l=20, r=20, t=60, b=20),
+            xaxis=dict(
+                title= " ",
+                title_font=dict(size=20, color="#1f77b4"),
+                tickfont=dict(size=16, color="#1f77b4"),
+                showgrid=True,
+                gridcolor="rgba(173, 216, 230, 0.3)",  # light blue grid
+                linecolor="#1f77b4",
+                zerolinecolor="#1f77b4"
+            ),
+            yaxis=dict(
+                title=None,
+                tickfont=dict(size=16, color="#1f77b4"),
+                showgrid=True,
+                gridcolor="rgba(173, 216, 230, 0.3)",
+                linecolor="#1f77b4",
+                zerolinecolor="#1f77b4"
+            ),
+            plot_bgcolor='rgba(240, 248, 255, 0.6)',  # light blueish background
+            paper_bgcolor='rgba(240, 248, 255, 1)',   # light paper color
+            font=dict(family="Roboto, sans-serif", size=18, color="#1f77b4"),
+            margin=dict(l=40, r=40, t=70, b=40),
             height=500
         )
+
 
         st.plotly_chart(fig2, use_container_width=True)
 
@@ -124,12 +156,6 @@ if (selected_dataset != "Overall for both"):
             st.write("#### 👥 Hoạt động người dùng")
 
         if 'user_id' in dataset.columns:
-            # user_info = dataset[['user_id', 'user']].drop_duplicates()
-            # user_counts = dataset['user_id'].value_counts()
-            # user_counts = pd.merge(user_counts, user_info, on='user_id', how='left')
-            # st.write("Total Users:", user_counts.shape[0])
-            # st.write("Most Active Users:")
-            # st.dataframe(user_counts.head())
             user_info = dataset[['user_id', 'user']].drop_duplicates()
             user_counts = dataset['user_id'].value_counts().reset_index()
             user_counts.columns = ['user_id', 'activity_count']
@@ -146,7 +172,7 @@ if (selected_dataset != "Overall for both"):
             )
 
             # Sort based on selection
-            if option == "Most Active Users":
+            if option == "Most Active Users" or option == "Những người dùng đánh giá nhiều nhất": 
                 display_data = user_counts.sort_values(by="activity_count", ascending=False).head(10)
             else:
                 display_data = user_counts.sort_values(by="activity_count", ascending=True).head(10)
@@ -154,6 +180,7 @@ if (selected_dataset != "Overall for both"):
             st.subheader(option)
             st.dataframe(display_data[['user_id', 'user', 'activity_count']])
 
+    st.markdown("---")
     # === ⭐ Rating Distribution (for fashion dataset) ===
     if 'rating' in dataset.columns:
         if language == "English":
@@ -170,6 +197,8 @@ if (selected_dataset != "Overall for both"):
         fig, ax = plt.subplots()
         sns.countplot(data=dataset, x='rating', ax=ax, order=sorted(dataset['rating'].unique()))
         ax.set_title("Rating Distribution" if language == "English" else "Phân phối số sao")
+        if (selected_dataset == "Products Ratings"):
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=70)
         st.pyplot(fig)
 
 else:
@@ -204,11 +233,12 @@ else:
         xaxis_title="Sub-Category",
         yaxis_title="Mean Rating",
         xaxis=dict(tickangle=-60),
-        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=20.02, xanchor="center", x=18),
+        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
         plot_bgcolor='white',
         margin=dict(l=40, r=40, t=60, b=80),
         height=500
     )
+
 
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -245,7 +275,7 @@ else:
         xaxis_title="Sub-Category",
         yaxis_title="Number of Ratings",
         xaxis=dict(tickangle=-60),
-        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1.02, xanchor="center", x=20),
+        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
         plot_bgcolor='white',
         height=500,
         margin=dict(l=40, r=40, t=60, b=100)

@@ -41,11 +41,7 @@ if language == "English":
 
     ## 📦 Datasets
 
-    ### 📁 Project 1 – General Product Recommendation
-    - `Products_with_Categories.csv`: Product metadata (name, category).
-    - `Transactions.csv`: User-product interaction history.
-
-    ### 📁 Project 2 – Fashion (Men's Clothing)
+    ### 📁 Project – Fashion (Men's Clothing)
     - `Products_ThoiTrangNam.csv`: Product metadata for men’s fashion.
     - `Products_ThoiTrangNam_rating.csv`: User ratings for fashion products.
 
@@ -115,11 +111,7 @@ elif language == "Tiếng Việt":
 
     ## 📦 Tập Dữ Liệu
 
-    ### 📁 Dự Án 1 – Gợi ý sản phẩm chung
-    - `Products_with_Categories.csv`: Thông tin sản phẩm (tên, danh mục).
-    - `Transactions.csv`: Lịch sử tương tác giữa người dùng và sản phẩm.
-
-    ### 📁 Dự Án 2 – Thời trang nam
+    ### 📁 Dự Án – Thời trang nam
     - `Products_ThoiTrangNam.csv`: Thông tin sản phẩm thời trang nam.
     - `Products_ThoiTrangNam_rating.csv`: Đánh giá sản phẩm của người dùng.
 
