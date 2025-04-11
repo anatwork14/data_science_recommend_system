@@ -6,7 +6,7 @@ seaborn
 scikit-learn
 scikit-surprise==1.1.4
 scipy==1.15.2
-surprise==0.1
+# surprise==0.1
 wordcloud==1.9.4
 st-annotated-text==4.0.2
 st-theme==1.2.3

@@ -3,10 +3,27 @@ import pandas as pd
 import pickle
 import numpy as np
 import scipy.sparse
-
+import base64
+import math
 # Get user's language choice
 language = st.session_state.get("language", "English")
 
+def get_base64_image(image_path):
+        with open(image_path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+
+image_base64 = get_base64_image("example.jpg")
+st.markdown("""
+            <link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap" rel="stylesheet">
+            <style>
+                .baloo {
+                    font-family: 'Baloo Chettan 2', cursive;
+                }
+                .helvetica {
+                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                }
+            </style>
+        """, unsafe_allow_html=True)
 # === 📊 Dataset Setup ===
 dataset_name_user_rating = "Products_ThoiTrangNam_rating.csv"
 dataset_name_products = "Products_ThoiTrangNam_downsize.csv"
@@ -298,6 +315,104 @@ else:
         )
     else:
         user_id = selected_user  # already a user_id
+    product_ids = (
+    user_rating_df[user_rating_df["user_id"] == user_id]
+    .drop_duplicates(keep="first")
+    .sort_values("rating")  # Now sorting works because 'rating' is present
+    .head(100)["product_id"]
+    .tolist()
+    )
+
+    products = []
+
+    # Load default image
+    products = []
+
+    for x in product_ids:
+        product_row = products_df[products_df["product_id"] == x]
+        
+        if not product_row.empty:
+            # Extract image
+            image_url = product_row["image"].values[0]
+            
+            # Check for missing/NaN image
+            if not image_url or (isinstance(image_url, float) and math.isnan(image_url)):
+                image_url = f"data:image/jpg;base64,{image_base64}"
+
+            products.append({
+                "name": product_row["product_name"].values[0],
+                "price": product_row["price"].values[0],
+                "rating": product_row["rating"].values[0],
+                "image": image_url,
+                "category": product_row["sub_category"].values[0],
+                "product_url": product_row["link"].values[0],
+            })
+
+    # CSS for horizontal scrolling
+    st.markdown(f"#### 🔄 Top {len(products)} products that user - {selected_user} has bought" if language == "English" else f"#### 🔄 Top {len(products)} sản phẩm mà người dùng - {selected_user} đã mua")
+    st.markdown("""
+    <style>
+    .product-container {
+        display: flex;
+        overflow-x: auto;
+        padding: 1rem 0;
+        gap: 1rem;
+        scrollbar-width: thin;
+    }
+    .product-card {
+        flex: 0 0 auto;
+        width: 240px;
+        border: 1px solid #eaeaea;
+        border-radius: 10px;
+        padding: 0.5rem;
+        text-align: center;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .product-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Generate product cards
+    product_html = '<div class="product-container">'
+
+    for product in products:
+        product_html += f"""<div class="product-card">
+            <img src="{product['image']}" alt="{product['name']}"/>
+            <div class ="helvetica" style="display: flex; justify-content: space-between; align-items: center; font-size: 13px">
+                <div style="font-weight: 200; color: black">MEN</div>
+                <div style="font-weight: 100; font-size: 12px; color: black;">{product["category"]}</div>
+            </div>
+            <div class="helvetica" style='font-weight: 300; font-size: 16px; color: black; height: 80px; overflow: hidden;'>{product['name']}</div>
+            <div class="helvetica" style='color: black; font-weight: 800;'>{product['price']} VND</div>
+            <div style='color: black; font-weight: 1000'>⭐ {product['rating']}</div>
+            <a href="{product['product_url']}" target="_blank">
+                            <button style='
+                                margin-top: 0.8rem;
+                                padding: 0.5rem 1rem;
+                                background-color: black;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-family: "Baloo Chettan 2", cursive;
+                                font-size: 1rem;
+                                width: 100%
+                            '>
+                                View Product
+                            </button>
+            </a>
+        </div>
+        """
+
+    product_html += '</div>'
+
+
+    st.markdown(product_html, unsafe_allow_html=True)
     st.markdown("---")
 
 recommendations = content_based_filtering(product_id, num_products1) if (filtering_method == "🧠 Content-Based Filtering" or filtering_method == "🧠 Lọc theo nội dung") else collab_filtering(user_id, num_products2, selected_category)
@@ -340,30 +455,13 @@ if (len(suggested_products) > 0):
         cols = st.columns(len(paged_products))
 
         # Import Google Font only once (place this near the top of your app)
-        st.markdown("""
-            <link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap" rel="stylesheet">
-            <style>
-                .baloo {
-                    font-family: 'Baloo Chettan 2', cursive;
-                }
-                .helvetica {
-                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                }
-            </style>
-        """, unsafe_allow_html=True)
 
         # Product display with Baloo Chettan 2
         for i, product in enumerate(paged_products):
             with cols[i]:
-                import base64
-                import math
-                def get_base64_image(image_path):
-                    with open(image_path, "rb") as f:
-                        return base64.b64encode(f.read()).decode()
 
                 image_url = product.get("image_url")
                 if not image_url or (isinstance(image_url, float) and math.isnan(image_url)):
-                    image_base64 = get_base64_image("example.jpg")
                     image_url = f"data:image/jpg;base64,{image_base64}"
                 description = product.get("description")
                 if not description or (isinstance(description, float) and math.isnan(description)):
@@ -415,7 +513,7 @@ if (len(suggested_products) > 0):
                         st.markdown(f"""
                             <div style='
                                 font-size: 12px;
-                                color: white;
+                                color: #397DFF;
                                 width: 100%;
                                 padding: 8px 4px;
                                 word-wrap: break-word;
