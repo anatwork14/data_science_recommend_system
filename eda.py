@@ -27,7 +27,7 @@ user_rating_df, products_df, overall_df = load_data()
 
 selected_dataset = st.sidebar.selectbox(
     "Choose a dataset to analyze:" if language == "English" else "Chọn dữ liệu để phân tích:",
-    ("Products Ratings", "User Ratings", "Overall for both")
+    ("Products Ratings", "User Ratings")
 )
 
 st.session_state.selected_dataset = selected_dataset
@@ -201,88 +201,88 @@ if (selected_dataset != "Overall for both"):
             ax.set_xticklabels(ax.get_xticklabels(), rotation=70)
         st.pyplot(fig)
 
-else:
-    st.write("""---""")
-    mean_ratings_by_subcategory = dataset.groupby('sub_category')[['user_rating', 'product_overall_rating']].mean()
-    import plotly.graph_objects as go
+# else:
+#     st.write("""---""")
+#     mean_ratings_by_subcategory = dataset.groupby('sub_category')[['user_rating', 'product_overall_rating']].mean()
+#     import plotly.graph_objects as go
 
-    fig1 = go.Figure()
+#     fig1 = go.Figure()
 
-    # Line for user rating
-    fig1.add_trace(go.Scatter(
-        x=mean_ratings_by_subcategory.index,
-        y=mean_ratings_by_subcategory['user_rating'],
-        mode='lines+markers',
-        name='User Rating' if language == "English" else "Đánh giá người dùng",
-        line=dict(color='royalblue', width=3),
-        marker=dict(size=6)
-    ))
+#     # Line for user rating
+#     fig1.add_trace(go.Scatter(
+#         x=mean_ratings_by_subcategory.index,
+#         y=mean_ratings_by_subcategory['user_rating'],
+#         mode='lines+markers',
+#         name='User Rating' if language == "English" else "Đánh giá người dùng",
+#         line=dict(color='royalblue', width=3),
+#         marker=dict(size=6)
+#     ))
 
-    # Line for product overall rating
-    fig1.add_trace(go.Scatter(
-        x=mean_ratings_by_subcategory.index,
-        y=mean_ratings_by_subcategory['product_overall_rating'],
-        mode='lines+markers',
-        name='Product Overall Rating' if language == "English" else "Đánh giá chung của sản phẩm",
-        line=dict(color='orange', width=3),
-        marker=dict(size=6)
-    ))
+#     # Line for product overall rating
+#     fig1.add_trace(go.Scatter(
+#         x=mean_ratings_by_subcategory.index,
+#         y=mean_ratings_by_subcategory['product_overall_rating'],
+#         mode='lines+markers',
+#         name='Product Overall Rating' if language == "English" else "Đánh giá chung của sản phẩm",
+#         line=dict(color='orange', width=3),
+#         marker=dict(size=6)
+#     ))
 
-    fig1.update_layout(
-        title="📈 Mean Ratings by Sub-Category" if language == "English" else "📈 Đánh giá trung bình theo chủng loại",
-        xaxis_title="Sub-Category",
-        yaxis_title="Mean Rating",
-        xaxis=dict(tickangle=-60),
-        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
-        plot_bgcolor='white',
-        margin=dict(l=40, r=40, t=60, b=80),
-        height=500
-    )
+#     fig1.update_layout(
+#         title="📈 Mean Ratings by Sub-Category" if language == "English" else "📈 Đánh giá trung bình theo chủng loại",
+#         xaxis_title="Sub-Category",
+#         yaxis_title="Mean Rating",
+#         xaxis=dict(tickangle=-60),
+#         legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
+#         plot_bgcolor='white',
+#         margin=dict(l=40, r=40, t=60, b=80),
+#         height=500
+#     )
 
 
-    st.plotly_chart(fig1, use_container_width=True)
+#     st.plotly_chart(fig1, use_container_width=True)
 
-    st.write("""---""")
-    # Calculate the count of 1-star and 5-star ratings
-    rating_counts = dataset.groupby('sub_category')['user_rating'].value_counts().unstack(fill_value=0)
+#     st.write("""---""")
+#     # Calculate the count of 1-star and 5-star ratings
+#     rating_counts = dataset.groupby('sub_category')['user_rating'].value_counts().unstack(fill_value=0)
 
-    # Initialize figure
-    fig = go.Figure()
+#     # Initialize figure
+#     fig = go.Figure()
 
-    # Add 1-star line
-    fig.add_trace(go.Scatter(
-        x=rating_counts.index,
-        y=rating_counts[1],
-        mode='lines+markers',
-        name='⭐ 1-Star Ratings' if language == "English" else "⭐ Đánh giá 1 sao",
-        line=dict(color='red', width=3),
-        marker=dict(size=6)
-    ))
+#     # Add 1-star line
+#     fig.add_trace(go.Scatter(
+#         x=rating_counts.index,
+#         y=rating_counts[1],
+#         mode='lines+markers',
+#         name='⭐ 1-Star Ratings' if language == "English" else "⭐ Đánh giá 1 sao",
+#         line=dict(color='red', width=3),
+#         marker=dict(size=6)
+#     ))
 
-    # Add 5-star line
-    fig.add_trace(go.Scatter(
-        x=rating_counts.index,
-        y=rating_counts[5],
-        mode='lines+markers',
-        name='🌟 5-Star Ratings'if language == "English" else "⭐ Đánh giá 5 sao",
-        line=dict(color='green', width=3),
-        marker=dict(size=6)
-    ))
+#     # Add 5-star line
+#     fig.add_trace(go.Scatter(
+#         x=rating_counts.index,
+#         y=rating_counts[5],
+#         mode='lines+markers',
+#         name='🌟 5-Star Ratings'if language == "English" else "⭐ Đánh giá 5 sao",
+#         line=dict(color='green', width=3),
+#         marker=dict(size=6)
+#     ))
 
-    # Update layout for better aesthetics
-    fig.update_layout(
-        title="📊 1-Star and 5-Star Ratings by Sub-Category" if language == "English" else "📊 Thống kê đánh giá 1 sao và 5 sao theo thể loại sản phẩm",
-        xaxis_title="Sub-Category",
-        yaxis_title="Number of Ratings",
-        xaxis=dict(tickangle=-60),
-        legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
-        plot_bgcolor='white',
-        height=500,
-        margin=dict(l=40, r=40, t=60, b=100)
-    )
+#     # Update layout for better aesthetics
+#     fig.update_layout(
+#         title="📊 1-Star and 5-Star Ratings by Sub-Category" if language == "English" else "📊 Thống kê đánh giá 1 sao và 5 sao theo thể loại sản phẩm",
+#         xaxis_title="Sub-Category",
+#         yaxis_title="Number of Ratings",
+#         xaxis=dict(tickangle=-60),
+#         legend=dict(title="Legend", orientation="v", yanchor="bottom", y=1, xanchor="right", x=1),
+#         plot_bgcolor='white',
+#         height=500,
+#         margin=dict(l=40, r=40, t=60, b=100)
+#     )
 
-    # Display in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+#     # Display in Streamlit
+#     st.plotly_chart(fig, use_container_width=True)
 
 # === 📥 Download Option ===
 if language == "English":
