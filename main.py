@@ -4,7 +4,7 @@ from PIL import Image
 
 # Set language (stores in session state)
 if "language" not in st.session_state:
-    st.session_state.language = "English"
+    st.session_state.language = "Tiếng Việt"
 
 
 image = Image.open('shopee.jpg')
@@ -32,3 +32,11 @@ recommendation = st.Page("recommendation.py", title="Recommendation System", ico
 
 pg = st.navigation([introduction, user_guide, eda, recommendation])
 pg.run()
+st.sidebar.write("""Made By 
+                 
+                    Bùi Khánh An & Trần Thanh Trúc""")
+st.sidebar.write("""Instructed By 
+                 
+                    ♥️♥️♥️ Khuất Thuỳ Phương ♥️♥️♥️""")
+
+st.sidebar.markdown("# April 2025")
