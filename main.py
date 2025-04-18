@@ -28,9 +28,10 @@ st.sidebar.write("""---""")
 introduction = st.Page("introduction.py", title="Introduction", icon="🎈")
 user_guide = st.Page("user_guide.py", title="User Guide", icon="❄️")
 eda = st.Page("eda.py", title="Exploratory Data Analysis", icon="🎉")
-recommendation = st.Page("recommendation.py", title="Recommendation System", icon="🤖")
+content_based_filtering = st.Page("content_based_filtering.py", title="Content-based Filtering", icon="🤖")
+collaborative_filtering = st.Page("collaborative_filtering.py", title="Collaborative Filtering", icon="🛗")
 
-pg = st.navigation([introduction, user_guide, eda, recommendation])
+pg = st.navigation([introduction, user_guide, eda, content_based_filtering, collaborative_filtering])
 pg.run()
 st.sidebar.write("""Made By 
                  
