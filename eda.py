@@ -51,17 +51,14 @@ else:
     st.subheader(f"📊 Thống kê Dữ liệu cho {selected_dataset}")
     st.write("Kích thước:", dataset.shape)
     st.write("Dữ liệu mẫu:")
-    text = "Chọn số lượng mẫu dữ liệu để hiển thị"
     
-value = value = st.slider(text, min_value=0, max_value=100, value=5)
-st.dataframe(dataset.head(value))
+st.dataframe(dataset.head(50))
 if (selected_dataset != "Overall for both"):
     if (selected_dataset == "Products Ratings"):
         # === 🛍️ Top Categories ===
         if 'sub_category' in dataset.columns:
             st.write("#### Top Categories" if language == "English" else "#### Danh mục phổ biến")
-            value = value = st.slider("Select the number of category to display" if language == "English" else "Chọn số lượng thể loại để hiển thị", min_value=0, max_value=dataset["sub_category"].nunique(), value=5)
-            top_categories = dataset['sub_category'].value_counts().head(value)
+            top_categories = dataset['sub_category'].value_counts()
             st.bar_chart(top_categories)
         
         st.markdown("---")
