@@ -28,13 +28,11 @@ if language == "English":
     ### 🔹 Content-Based Filtering
     Recommends similar items based on product content (e.g., name, description, category).
 
-    - `cosine.pkl`: Uses cosine similarity between product vectors.
-    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim (Updating).
+    - `gensim.pkl`: Uses word embeddings (Word2Vec / Doc2Vec) trained with Gensim.
 
     ### 🔹 Collaborative Filtering
     Recommends items based on user behavior and preferences.
 
-    - `als.pkl`: Matrix factorization using the ALS algorithm (Updating).
     - `surprise.pkl`: Collaborative filtering model using the Surprise library.
 
     ---
@@ -98,13 +96,10 @@ elif language == "Tiếng Việt":
     ### 🔹 Gợi ý dựa trên nội dung
     Đề xuất sản phẩm tương tự dựa trên nội dung (ví dụ: tên, mô tả, danh mục).
 
-    - `cosine.pkl`: Sử dụng độ tương đồng cosine giữa các vector sản phẩm.
     - `gensim.pkl`: Sử dụng word embeddings (Word2Vec / Doc2Vec) huấn luyện bằng Gensim.
 
     ### 🔹 Gợi ý dựa trên cộng tác
     Đề xuất sản phẩm dựa trên hành vi và sở thích người dùng.
-
-    - `als.pkl`: Phân rã ma trận sử dụng thuật toán ALS.
     - `surprise.pkl`: Mô hình cộng tác sử dụng thư viện Surprise.
 
     ---
